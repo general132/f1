@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AutoZone - Notícias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#e11d48; --muted:#94a3b8; --glass: rgba(255,255,255,0.03);
+      --max-w:1200px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#081023 0%, #071017 100%);color:#e6eef8;}
+    .container{max-width:var(--max-w);margin:0 auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#111827,#0b1220);display:flex;align-items:center;justify-content:center;font-weight:700}
+    nav ul{list-style:none;display:flex;gap:18px;margin:0;padding:0}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600}
+    nav a.active{color:white}
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:20px;margin:20px 0}
+    .hero .lead{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+    .lead img{width:100%;height:340px;object-fit:cover;border-radius:8px}
+    .lead h1{margin:12px 0 6px;font-size:24px}
+    .lead p{color:var(--muted);margin:0}
+    .sidebar-cards{display:flex;flex-direction:column;gap:14px}
+    .small-card{background:var(--card);padding:12px;border-radius:10px}
+    .small-card img{width:100%;height:80px;object-fit:cover;border-radius:6px}
+    .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:18px 0}
+    .card{background:var(--card);padding:14px;border-radius:12px;overflow:hidden}
+    .card .thumb{width:100%;height:160px;object-fit:cover;border-radius:8px}
+    .card h3{margin:10px 0 6px;font-size:18px}
+    .meta{color:var(--muted);font-size:13px}
+    footer{padding:20px 0;color:var(--muted);text-align:center;font-size:14px}
+    .article{background:var(--card);padding:18px;border-radius:12px}
+    .article h2{margin-top:0}
+    .article img{width:100%;height:360px;object-fit:cover;border-radius:8px;margin:12px 0}
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .news-grid{grid-template-columns:repeat(2,1fr)}
+      nav ul{display:flex;gap:12px;flex-wrap:wrap}
+    }
+    @media (max-width:640px){
+      .news-grid{grid-template-columns:1fr}
+      .lead img{height:220px}
+    }
+    .muted{color:var(--muted)}
+    .btn{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;color:white;font-weight:700;cursor:pointer}
+    a{color:inherit;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">AZ</div>
+        <div>
+          <div style="font-weight:800">AutoZone</div>
+          <div class="muted" style="font-size:12px">Notícias, resultados e análises</div>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#/" class="active">Início</a></li>
+          <li><a href="#/f1">F1</a></li>
+          <li><a href="#/f2">F2</a></li>
+          <li><a href="#/moto">MotoGP</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="app"></main>
+
+    <footer>
+      Conteúdo atualizado com notícias reais — versão demo.
+    </footer>
+  </div>
+
+  
+
+  <template id="tpl-home">
+    <section class="hero">
+      <div class="lead">
+        <img src="imagens/max-verstappen-red-bull-racing.jpg" alt="Hero" class="lazy">
+        <h1>Max Verstappen vence GP da Itália e amplia liderança</h1>
+        <p class="muted">Fórmula 1 — Setembro 2025</p>
+        <p class="muted">Resumo: Destaques do esporte mundial.</p>
+      </div>
+      <aside class="sidebar-cards">
+        <div class="small-card">
+          <img src="imagens/redbull.jpg" class="lazy">
+          <div class="muted" style="font-size:13px;margin-top:8px">Fórmula 1: disputa acirrada</div>
+        </div>
+        <div class="small-card">
+          <img src="imagens/motogp1.png" class="lazy">
+          <div class="muted" style="font-size:13px;margin-top:8px">MotoGP: adrenalina na pista</div>
+        </div>
+      </aside>
+    </section>
+    <section>
+      <h2>Últimas notícias</h2>
+      <div class="news-grid" id="news-grid"></div>
+    </section>
+  </template>
+
+  <template id="tpl-category">
+    <section>
+      <h2 id="cat-title"></h2>
+      <div class="news-grid" id="cat-grid"></div>
+    </section>
+  </template>
+
+  <template id="tpl-article">
+    <article class="article">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div class="muted">Categoria • Setembro 2025</div>
+          <h2 id="article-title">Título detalhado do artigo — análise completa</h2>
+        </div>
+        <div><button class="btn" id="btn-back">Voltar</button></div>
+      </div>
+      <img data-src="" id="article-image" class="lazy">
+      <p class="muted" id="article-author">Por Redação — análise esportiva</p>
+      <p id="article-content">Conteúdo completo da notícia selecionada.</p>
+      <h3></h3>
+      <p class="muted" id="article-details">Explicação curta sobre a performance.</p>
+    </article>
+  </template>
+
+<script>
+   const newsData = {
+  f1: [
+    { id: 1, title: "Verstappen vence GP da Itália em Monza", excerpt: "Max Verstappen dominou a prova em Monza e ampliou sua liderança no campeonato. O piloto da Red Bull largou da pole, manteve ritmo constante e administrou os pneus com maestria durante toda a corrida, garantindo vitória sem ameaças significativas.", img: "imagens/monza.jpg", link: "#" },
+    { id: 2, title: "Piastri devolve posição a Norris por ordem de equipe", excerpt: "Polêmica em Monza: Piastri respeitou ordem de equipe e devolveu posição a Norris. A decisão, tomada para maximizar pontos para a equipe McLaren, gerou debates entre fãs e especialistas sobre a ética das ordens de equipe.", img: "imagens/piastridevolv.jpg", link: "#" },
+    { id: 3, title: "Verstappen conquista pole recorde em Monza", excerpt: "Volta histórica garante pole position e vantagem estratégica para a corrida. Max Verstappen completou a volta em 1:19.890, quebrando o recorde do circuito e deixando pilotos da Ferrari e Mercedes mais de meio segundo atrás.", img: "imagens/max-verstappen-red-bull-racing.jpg", link: "#" },
+    { id: 4, title: "McLaren domina o pódio em Monza", excerpt: "Norris e Piastri completam pódio com performance consistente, pressionando Red Bull. A equipe mostrou estratégia perfeita nos pit-stops e boa gestão de pneus, garantindo um resultado histórico.", img: "imagens/podiomc.jpg", link: "#" },
+    { id: 5, title: "Audi anuncia parceria com Adidas para 2026", excerpt: "Audi F1 fecha acordo de vestuário com Adidas para a próxima era da equipe. A colaboração prevê uniformes tecnológicos que melhoram a ventilação e conforto dos pilotos durante os Gs elevados.", img: "imagens/audiad.png", link: "#" },
+    { id: 6, title: "Hamilton elogia escolhas da nova equipe Cadillac", excerpt: "Hamilton comenta sobre as contratações de grandes nomes para a Cadillac, destacando o potencial da equipe para disputar vitórias e títulos nas próximas temporadas.", img: "imagens/hamiltonbottas.jpg", link: "#" },
+    { id: 7, title: "Verstappen compara sua tenacidade a Fernando Alonso", excerpt: "Após mais uma vitória, piloto cita a resiliência de Alonso como inspiração, enfatizando a importância de aprender com erros e manter concentração durante toda a temporada.", img: "imagens/ferv.jpg", link: "#" },
+    { id: 8, title: "Discussão sobre ordens de equipe divide opiniões", excerpt: "Especialistas debatem se decisões de equipe prejudicam a competitividade. Alguns argumentam que estratégias maximizam pontos, enquanto outros acreditam que minam o espírito esportivo.", img: "imagens/chefs.jpg", link: "#" },
+    { id: 9, title: "Exposição oficial da F1 chega à Alemanha", excerpt: "A 'Formula 1 Exhibition' desembarca em Oberhausen com peças históricas, carros icônicos e experiências interativas para fãs, incluindo simuladores de corrida e apresentações de pilotos.", img: "imagens/exposi.jpg", link: "#" }
+  ],
+  f2: [
+    { id: 1, title: "Luke Browning vence Feature Race em Monza", excerpt: "Browning conquista sua primeira vitória na corrida principal da F2. O piloto mostrou maturidade em ultrapassagens e administrou pneus e combustível com precisão.", img: "imagens/luke.jpg", link: "#" },
+    { id: 2, title: "Leonardo Fornaroli lidera o campeonato da F2", excerpt: "Italino amplia vantagem após bom fim de semana em Monza, mantendo regularidade nas corridas e garantindo pontos essenciais para o título.", img: "imagens/leo.png", link: "#" },
+    { id: 3, title: "Fornaroli vence a Sprint em Monza", excerpt: "Vitória curta, intensa e comemorada pela torcida local. A estratégia de largada e a gestão de pneus foram decisivas para manter a liderança do início ao fim.", img: "imagens/leow.jpg", link: "#" },
+    { id: 4, title: "Joshua Dürksen se destaca com pódios", excerpt: "Piloto surpreende com duas performances sólidas em Monza, mantendo posição no campeonato e mostrando evolução técnica durante as corridas.", img: "imagens/jow.jpg", link: "#" },
+    { id: 5, title: "Resultados completos da Feature Race: Browning em 1º", excerpt: "Classificação final trouxe emoção do início ao fim, com ultrapassagens estratégicas e disputa acirrada entre os líderes da temporada.", img: "imagens/brow.jpg", link: "#" },
+    { id: 6, title: "Classificação apertada em Monza para a F2", excerpt: "Sessões de qualificação decidiram a ordem com margens mínimas de milésimos de segundo, mostrando equilíbrio técnico entre as equipes.", img: "imagens/class.jpeg", link: "#" },
+    { id: 7, title: "Verschoor e Crawford continuam na briga", excerpt: "Pilotos mantêm regularidade e seguem entre os líderes da temporada, disputando cada ponto com consistência e desempenho elevado.", img: "imagens/vers.jpg", link: "#" },
+    { id: 8, title: "Browning se aproxima da liderança de Fornaroli", excerpt: "Vitória coloca Browning como ameaça real ao título, aumentando a pressão sobre o líder e animando a torcida nas últimas etapas.", img: "imagens/redbull.jpg", link: "#" },
+    { id: 9, title: "Batalha pelo título da F2 esquenta nas últimas etapas", excerpt: "Com poucas corridas restantes, a tabela fica mais apertada. Equipes e pilotos estudam estratégias para maximizar pontos em cada corrida.", img: "imagens/bat.jpeg", link: "#" }
+  ],
+  moto: [
+    { id: 1, title: "Marc Márquez vence GP de San Marino", excerpt: "Márquez domina em Misano e fica cada vez mais próximo do título. Vitória conquistada com ultrapassagens estratégicas e ritmo constante durante toda a corrida.", img: "imagens/marc.jpg", link: "#" },
+    { id: 2, title: "Bezzecchi vence a Sprint em Misano", excerpt: "Italiano aproveita incidente entre rivais e conquista a Sprint. Mostrou habilidade na largada e controle da moto em curvas críticas.", img: "imagens/bez1.jpeg", link: "#" },
+    { id: 3, title: "Bezzecchi garante pole no GP de San Marino", excerpt: "Pole position após volta rápida com condições perfeitas de pista. Estratégia de pneus e aerodinâmica foram decisivas.", img: "imagens/bezz.jpg", link: "#" },
+    { id: 4, title: "Misano renova contrato com MotoGP até 2031", excerpt: "Circuito italiano continuará no calendário por mais anos, mantendo tradição histórica e oferecendo infraestrutura moderna para equipes e fãs.", img: "imagens/visano.jpg", link: "#" },
+    { id: 5, title: "MotoE terá sua continuidade revista após 2025", excerpt: "Dorna e FIM estudam o futuro da categoria elétrica, analisando sustentabilidade, performance e interesse do público.", img: "imagens/motoe.jpg", link: "#" },
+    { id: 6, title: "Márquez alcança 11 vitórias na temporada", excerpt: "Sequência impressionante do piloto espanhol na tabela de resultados, mostrando consistência e domínio técnico sobre a moto.", img: "imagens/marquez.jpg", link: "#" },
+    { id: 7, title: "Treinos livres em Misano: Márquez lidera", excerpt: "Bom desempenho nos treinos colocou a Ducati no topo, indicando ritmo forte para corrida e boa gestão de pneus.", img: "imagens/lider.jpg", link: "#" },
+    { id: 8, title: "Grid definido: Bezzecchi larga na pole", excerpt: "Organização do grid definiu uma largada disputada em Misano, com todos os pilotos buscando vantagem desde o início.", img: "imagens/pole.jpg", link: "#" },
+    { id: 9, title: "Bagnaia sofre queda e abandona em Misano", excerpt: "Piloto da Ducati teve acidente e não completou a prova, causando impacto na classificação do campeonato e reajuste de estratégias.", img: "imagens/queda.jpg", link: "#" }
+  ]
+};
+
+    function render(){
+      const hash = location.hash.replace('#','') || '/';
+      const app = document.getElementById('app');
+
+      if(hash.startsWith('/article/')){
+        const parts = hash.split('/'); 
+        const catId = parts[2].split('-');
+        const category = catId[0]; 
+        const id = parseInt(catId[1],10);
+        const found = newsData[category].find(n=>n.id===id);
+
+        if(found){
+          app.innerHTML = document.getElementById('tpl-article').innerHTML;
+          document.getElementById('article-title').textContent = found.title;
+          const imgEl = document.getElementById('article-image');
+          imgEl.dataset.src = found.img;
+          imgEl.alt = found.title;
+          document.getElementById('article-author').textContent = `Fonte — ${found.link && found.link !== '#' ? 'ver fonte' : 'autozone'}`;
+          document.getElementById('article-content').textContent = found.excerpt
+          document.getElementById('article-details').textContent = "";
+
+          
+          const btnBack = document.getElementById('btn-back');
+          btnBack.onclick = ()=>location.hash=`#/${category}`;
+
+          lazyLoad();
+        } else {
+          app.innerHTML = '<div class="article"><h2>Artigo não encontrado</h2><p class="muted">A notícia selecionada não foi encontrada.</p><button class="btn" onclick="location.hash=\'#/\'">Voltar</button></div>';
+        }
+
+      } else if(hash.startsWith('/f1')){
+        renderCategory('Fórmula 1', newsData.f1);
+      } else if(hash.startsWith('/f2')){
+        renderCategory('Fórmula 2', newsData.f2);
+      } else if(hash.startsWith('/moto')){
+        renderCategory('MotoGP', newsData.moto);
+      } else {
+        app.innerHTML = document.getElementById('tpl-home').innerHTML;
+        const combined = newsData.f1.concat(newsData.moto);
+        renderNewsGrid(combined.slice(0,6), 'news-grid');
+      }
+      lazyLoad();
+      setActiveNav();
+    }
+
+    function renderCategory(title, data){
+      const app = document.getElementById('app');
+      app.innerHTML = document.getElementById('tpl-category').innerHTML;
+      document.getElementById('cat-title').textContent = title;
+      renderNewsGrid(data, 'cat-grid');
+    }
+
+    function renderNewsGrid(data, gridId){
+      const grid = document.getElementById(gridId);
+      if(!grid) return;
+      grid.innerHTML = '';
+      data.forEach
+      data.forEach(n=>{
+        const card = document.createElement('article');
+        card.className = 'card';
+        
+        let category = '';
+        if(newsData.f1.includes(n)) category = 'f1';
+        else if(newsData.f2.includes(n)) category = 'f2';
+        else if(newsData.moto.includes(n)) category = 'moto';
+
+        card.innerHTML = `
+          <img data-src="${n.img}" class="thumb lazy" alt="${n.title}"/>
+          <div class="meta">Set/2025 • Esporte</div>
+          <h3><a href="#/article/${category}-${n.id}">${n.title}</a></h3>
+          <p class="muted">${n.excerpt}</p>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function setActiveNav(){
+      document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+      const path = location.hash.replace('#/','').split('/')[0] || '';
+      const link = document.querySelector(`nav a[href='#/${path || ''}']`);
+      if(link) link.classList.add('active');
+      else document.querySelectorAll('nav a')[0].classList.add('active');
+    }
+
+    function lazyLoad(){
+      document.querySelectorAll('img.lazy').forEach(img=>{
+        if(!img.dataset.src) return;
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+        img.classList.remove('lazy');
+      });
+    }
+
+    window.addEventListener('hashchange', render);
+    window.addEventListener('load', render);
+  </script>
+</body>
+</html>
